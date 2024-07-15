@@ -1,0 +1,36 @@
+# Based on https://github.com/mehdisfdc/sfdx-GitHub-actions/blob/main/.github/workflows/main.yml
+name: Full deployment
+
+on:
+    workflow_dispatch:
+        inputs:
+            validateOnly:
+                description: 'Perform a validation deployment only'
+                type: boolean
+
+jobs:
+    default:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+            - name: Install Salesforce CLI
+              run: |
+                  npm i --global @salesforce/cli
+                  sf version
+            - name: Deploy changes to target org
+              run: |
+                  sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL_TARGET_ORG }}")
+                  deployFlags=(
+                    --wait 30
+                    --test-level RunLocalTests
+                    --verbose
+                    --source-dir force-app
+                    --ignore-conflicts 
+                  )
+                  if [ "${{ inputs.validateOnly }}" = "true" ]; then
+                    deployFlags+=( --dry-run )
+                  fi
+                  sf project deploy start "${deployFlags[@]}"
+
