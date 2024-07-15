@@ -1,0 +1,4 @@
+version: 1.0
+
+push_script: |
+    sf project deploy start --wait 60 --ignore-conflicts
