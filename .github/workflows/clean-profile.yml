@@ -17,4 +17,4 @@ jobs:
           - name: delete all @line attributes
             uses: Mudlet/xmlstarlet-action@master
             with:
-              args: ed -P -L --delete "/Profile/fieldPermissions[field='Account.Account_Open_Tasks__c']" /samples/sampleprofile.xml
+              args: ed -P -L --delete "/Profile/fieldPermissions[field='Account.Account_Open_Tasks__c']" ../samples/sampleprofile.xml
