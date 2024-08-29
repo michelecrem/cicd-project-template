@@ -1,0 +1,20 @@
+# Based on https://github.com/mehdisfdc/sfdx-GitHub-actions/blob/main/.github/workflows/main.yml
+name: Remove a fieldPermission from a profile
+
+on:
+    workflow_dispatch:
+        inputs:
+            fieldName:
+                description: 'Object.Field name'
+                type: text
+
+        
+jobs:
+
+    default:
+        runs-on: ubuntu-latest
+        steps:
+          - name: delete all @line attributes
+            uses: Mudlet/xmlstarlet-action@master
+            with:
+              args: ed -P -L --delete /Profile/fieldPermissions[field='Account.Account_Open_Tasks__c'] samples/sampleprofile.xml
